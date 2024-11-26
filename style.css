@@ -1,10 +1,9 @@
 #main {
-    width: 100%;
+    align-self: center;
 }
 
 #nav {
     background: green;
-    width: 100%;
     float: left;
 }
 

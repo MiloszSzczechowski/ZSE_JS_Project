@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./grades.css">
+        <link rel="stylesheet" href="./students.css">
         <title>Document</title>
     </head>
     <body>
@@ -12,15 +12,16 @@
             <thead>
                 <tr>
                     <th>Student</th>
-                    <th id="grades_tag" colspan="9999999999">Grades</th>
+                    <th id="grades_tag">Grades</th>
+                    <th id="notes_tag">Notes</th>
                 </tr>
             </thead>
             <tbody id="students">
             </tbody>
         </table>
 
-        <input type="button" value="Update" onclick="update_grades()">
+        <div id="note"></div>
 
-        <script src="./grades.js"></script>
+        <script src="./students.js"></script>
     </body>
 </html>
