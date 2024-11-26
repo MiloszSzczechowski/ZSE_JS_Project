@@ -1,0 +1,15 @@
+td, th {
+    border: 1px solid black;
+}
+
+.grade {
+    width: 20px;
+    text-align: center;
+    /* border: 0px; */
+}
+
+.grade_input {
+    width: 20px;
+    text-align: center;
+    border: 0px;
+}
