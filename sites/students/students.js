@@ -47,8 +47,8 @@ function generate_html() {
         let notes = generate_notes(student, index);
 
         new_html += `
-            <tr>
-                <td>
+            <tr class="student_row">
+                <td class="student_name">
                     ${student.name}
                 </td>
                 ${grades}
@@ -166,12 +166,12 @@ function generate_notes(student, index) {
 
     for (j; j < max_length; j++) {
         notes += `
-            <td class="grade"></td>
+            <td class="note"></td>
         `
     }
 
     notes += `
-        <td>
+        <td class="note_add">
             <input type="button" class="new_note_button" id="new_note_${index}" name="new_note" value="+" onclick="create_new_note(this)">
         </td>
     `
@@ -202,27 +202,27 @@ function display_note(button) {
     let note = students[indexes[1]].notes[indexes[2]];
 
     note_div.innerHTML = `
-        <h1>${note.title}</h1>
-        <p>${note.description}</p>
+        <h1 class="note_title">${note.title}</h1>
+        <p class="note_description">${note.description}</p>
     `
 }
 
 function create_new_note(button) {
     note_div.innerHTML = `
-        <label for="title">Note Title</label>
-        <input id="note_title" type="text" name="title"/>
+        <label class="new_note_title_label" for="title">Note Title</label>
+        <input class="new_note_title" id="new_note_title" type="text" name="title"/>
         <br>
-        <label for="description"> Note Description</label>
+        <label class="new_note_description_label" for="description"> Note Description</label>
         <br>
-        <textarea id="note_description" name="description" rows="10" cols="40"></textarea>
+        <textarea class="new_note_description" id="new_note_description" name="description" rows="10" cols="40"></textarea>
         <br>
-        <button onclick="add_note(${button.id.split("_")[2]})">Add Note</button>
+        <button class="add_note_button" onclick="add_note(${button.id.split("_")[2]})">Add Note</button>
     `
 }
 
 function add_note(student_index) {
-    title = document.getElementById("note_title").value;
-    description = document.getElementById("note_description").value;
+    title = document.getElementById("new_note_title").value;
+    description = document.getElementById("new_note_description").value;
 
     console.log(student_index);
     console.log(title);
