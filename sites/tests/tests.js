@@ -1,92 +1,140 @@
-const week_days = ["niedz", "pon", "wt", "srd", "czw", "pt", "sob"];
 const months = [
-    { name: "Styczen", length: 31, work_month: true, },
-    { name: "Luty", length: 28, work_month: true, },
-    { name: "Marzec", length: 31, work_month: true, },
-    { name: "Kwiecien", length: 30, work_month: true, },
-    { name: "Maj", length: 31, work_month: true, },
-    { name: "Czerwiec", length: 30, work_month: true, },
-    { name: "Lipiec", length: 31, work_month: false, },
-    { name: "Sierpien", length: 31, work_month: false, },
-    { name: "Wrzesien", length: 30, work_month: true, },
-    { name: "Pazdziernik", length: 31, work_month: true, },
-    { name: "Listopad", length: 30, work_month: true, },
-    { name: "Grudzien", length: 31, work_month: true, },
+    { name: "Styczeń", length: 31, },
+    { name: "Luty", length: 28, },
+    { name: "Marzec", length: 31, },
+    { name: "Kwieceń", length: 30, },
+    { name: "Maj", length: 31, },
+    { name: "Czerwiec", length: 30, },
+    { name: "Lipiec", length: 31, },
+    { name: "Sierpien", length: 31, },
+    { name: "Wrzesien", length: 30, },
+    { name: "Październik", length: 31, },
+    { name: "Listopad", length: 30, },
+    { name: "Grudzień", length: 31, },
 ]
 
-const tables = document.getElementById("tables");
-
-
-
-rok(2024);
-
-function rok(num_rok){
-    let index = 0;
-    for(let i = 0; i < 12; i++){
-
-        const number =(i+8)%12;
-        tables.innerHTML += `<h1>${months[number].name}</h1><table><tbody id="${months[number].name}"></tbody></table><br>`;
-
-        const table = document.getElementById(months[number].name);
-        
-        for (let j = 1; j <= months[number].length; j++) {
-            const day = j < 10 ? `0${j}` : j;
-            const month = number < 10 ? `0${number+1}` : number+1;
-            const year = number < 8 ? num_rok+1 : num_rok;
-            const data = new Date(`${year}-${month}-${day}`);
-
-
-            if (data.getDay() === 0 || data.getDate()===1) { 
-                index++;
-                table.innerHTML += `<tr id="row-${index}"></tr>`;
-            }
-
-            if(data.getDay()==6 || data.getDay()==0 ) continue;
-
-            if(data.getDate()==1 && data.getDay()>1 && data.getDay()<6){
-                for(let k = 0; k < data.getDay()-1; k++){
-                    const row = document.getElementById(`row-${index}`);
-                    row.innerHTML += `<td></td>`;
-                }
-            }
-
-
-            const row = document.getElementById(`row-${index}`);
-            row.innerHTML += `<td>${week_days[data.getDay()]} - ${j}<br><button></button></td>`;
-        }
+const tests = [    
+    {
+        title: "Example Test",
+        description: "This is an example test",
+        date: "2024-09-02",
     }
-}
+]
 
-function get_calendar_from_month(month_input, num_rok) {
+
+const tbody = document.getElementById("tbody");
+const header = document.getElementById("header");
+const test_div = document.getElementById("test_info");
+
+let month_index = 0;
+let year_index = 2024;
+
+get_month(month_index, 2024);
+
+function get_month(month_input, year_number) {
     let index = 0
-    const number =(month_input+8)%12;
-    tables.innerHTML += `<h1>${months[number].name}</h1><table><tbody id="${months[number].name}"></tbody></table><br>`;
+    const number = (month_input+8)%12;
 
-    const table = document.getElementById(months[number].name);
+    
+    const month = number < 10 ? `0${number+1}` : number+1;
+    const year = number < 8 ? year_number+1 : year_number;
+
+    header.innerHTML = `${months[number].name} ${year}`;
+    tbody.innerHTML = "";
     
     for (let j = 1; j <= months[number].length; j++) {
         const day = j < 10 ? `0${j}` : j;
-        const month = number < 10 ? `0${number+1}` : number+1;
-        const year = number < 8 ? num_rok+1 : num_rok;
-        const data = new Date(`${year}-${month}-${day}`);
+        const date = new Date(`${year}-${month}-${day}`);
 
 
-        if (data.getDay() === 0 || data.getDate()===1) { 
+        if (date.getDay() === 0 || date.getDate()===1) { 
             index++;
-            table.innerHTML += `<tr id="row-${index}"></tr>`;
+            tbody.innerHTML += `<tr class="calendar_row" id="row-${index}"></tr>`;
         }
 
-        if(data.getDay()==6 || data.getDay()==0 ) continue;
+        if(date.getDay()==6 || date.getDay()==0 ) continue;
 
-        if(data.getDate()==1 && data.getDay()>1 && data.getDay()<6){
-            for(let k = 0; k < data.getDay()-1; k++){
+        if(date.getDate()==1 && date.getDay()>1 && date.getDay()<6){
+            for(let k = 0; k < date.getDay()-1; k++){
                 const row = document.getElementById(`row-${index}`);
-                row.innerHTML += `<td></td>`;
+                row.innerHTML += `<td class="empty_calendar_cell"></td>`;
             }
         }
 
 
         const row = document.getElementById(`row-${index}`);
-        row.innerHTML += `<td>${week_days[data.getDay()]} - ${j}<br><button></button></td>`;
+        row.innerHTML += `<td class="calendar_cell">${j}${get_tests(`${year}-${month}-${day}`)}<br><button class="create_new_test_button" id="${year}-${month}-${day}" onclick="create_new_test(this)">+</button></td>`;
     }
+}
+
+function update_month() {
+    if (month_index == 10) {
+        month_index = 0;
+        year_index++;
+    }
+    if (month_index == -1) {
+        month_index = 8;
+        year_index--;
+    }
+
+    get_month(month_index, year_index);
+}
+
+function create_new_test(button) {    
+    test_div.innerHTML = `
+        <label class="new_test_title_label" for="title">Test Title</label>
+        <input class="new_test_title" id="new_test_title" type="text" name="title"/>
+        <br>
+        <label class="new_test_description_label" for="description">Test Description</label>
+        <br>
+        <textarea class="new_test_description" id="new_test_description" name="description" rows="10" cols="40"></textarea>
+        <br>
+        <button class="add_test_button" onclick="add_test('${button.id}')">Add Test</button>
+    `
+}
+
+function add_test(date) {
+    const title = document.getElementById("new_test_title").value;
+    const description = document.getElementById("new_test_description").value;
+
+    tests.push({
+        title: title,
+        description: description,
+        date: date,
+    })
+
+    test_div.innerHTML = `<h1 class="success_header">Successfully added test</h1>`
+
+    update_month();
+}
+
+function get_tests(date) {
+    let s = ``;
+    let index = 0;
+
+    for (let test of tests) {
+        if (test.date != date) {
+            index++;
+            continue;
+        }
+
+        s += `
+            <br>
+            <button class="display_test_button" onclick="display_test(${index})">${test.title}</button>
+        `
+
+        index++;
+    }
+
+    return s;
+}
+
+function display_test(index) {
+    let test = tests[index];
+
+    test_div.innerHTML = `
+        <h1 class="test_title">${test.title}</h1>
+        <h3 class="test_date"> ${test.date}</h3>
+        <p class="test_description">${test.description}</p>
+    `
 }

@@ -73,3 +73,8 @@ td, th {
 .add_note_button {
     /* <button> tag for submiting a new note */
 }
+
+
+.success_header {
+    /* <h1> tag added when a note is successfully added */
+}

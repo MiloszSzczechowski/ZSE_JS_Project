@@ -212,7 +212,7 @@ function create_new_note(button) {
         <label class="new_note_title_label" for="title">Note Title</label>
         <input class="new_note_title" id="new_note_title" type="text" name="title"/>
         <br>
-        <label class="new_note_description_label" for="description"> Note Description</label>
+        <label class="new_note_description_label" for="description">Note Description</label>
         <br>
         <textarea class="new_note_description" id="new_note_description" name="description" rows="10" cols="40"></textarea>
         <br>
@@ -224,16 +224,12 @@ function add_note(student_index) {
     title = document.getElementById("new_note_title").value;
     description = document.getElementById("new_note_description").value;
 
-    console.log(student_index);
-    console.log(title);
-    console.log(description);
-
     students[student_index].notes.push({
         title,
         description,
     });
 
-    note_div.innerHTML = `Successfully added note`;
+    note_div.innerHTML = `<h1 class="success_header">Successfully added note</h1>`;
 
     update();
 }
